@@ -1,0 +1,188 @@
+<DOCTYPE html>
+<title>Kristina & Elli 2015</title>
+<head>
+	<link rel="shortcut icon" type="image/png" href="icon.png">
+	<link href='http://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|IM+Fell+French+Canon' rel='stylesheet' type='text/css'>
+
+        <!-- postgreSQL databsae name = ekweddb -->
+        <meta charset="UTF-8">
+        <title>Example of Twitter Bootstrap 3 Carousel</title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    
+    <body>
+
+	<!-- Carousel Starts Here -->
+        <div class="bs-example">
+            <div id="myCarousel" class="carousel slide" data-interval="6000" data-ride="carousel">
+            	<!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>   
+               <!-- Carousel items -->
+                <div class="carousel-inner">
+                    <div class="active item">
+			<div class="inner-item">
+                        	<img src="./images/image1.jpg" alt="Image 1">
+			</div>
+                    </div>
+                    <div class="item">
+			<div class="inner-item">
+				<img src="./images/image2.jpg" alt="Image 2">
+			</div>        	
+	            </div>
+                    <div class="item">
+			<div class="inner-item">
+	                        <img src="./images/image3.jpg" alt="Image 3">
+			</div>        
+	            </div>
+                </div>
+                <!-- Carousel nav -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+	<!-- Carousel Ends Here -->
+
+	<!-- Form Starts Here -->
+	<div class="RSVPFormContainer">
+	<h2>Kristina & Elli 2015</h2>
+	<div class="RSVPForm">
+	
+	<p>Congratulations! You've been invited to the wedding. Please take a moment to fill out this RSVP form.</p>
+
+	<div id="name_input">
+			<form id="name_field" class="form" name="nameForm" action="addMainGuest.php">
+				Name: <input type="text" class="inputs" name="main_guest">
+				<br><br>I'm bringing guests <input id="guest_checkbox" type="checkbox" onchange="handleGuestCheckbox(this)">
+				<hr>
+			</form>
+
+		</div>
+		<div id="guest_input" class="form" style="visibility: hidden">
+			<p id="demo">Enter number of guests.</p>
+			<form id="extrasForm">
+			    <input id="extras" type="text" name="Extras">
+			</form>
+			<button onclick="displayGuestInputs()">Enter Guest Names</button>
+		</div>
+
+		<button style="position:center;" onclick="submitRSVP()">RSVP</button>
+		
+		<!-- Functions for dynamic updates on web page-->
+		<script>
+		function displayNumGuestInput(){
+			var newHTML = "<p id=\"demo\">Enter number of guests.</p>"
+			 				+ 	"<form id=\"extrasForm\">"
+			    			+		"<input id=\"extras\" type=\"text\" name=\"Extras\">"
+							+	"</form>"
+							+   "<button onclick=\"displayGuestInputs()\">Enter Guest Names</button>"
+			document.getElementById("guest_input").innerHTML =  newHTML;
+		}
+
+		function displayGuestInputs() {
+		    var num = document.getElementById("extras").value;
+		    if(num < 7)
+		    {
+			    var newHTML ="<form id=\"extrasFields\" action=\"addGuests.php\" method=\"post\">";
+			    
+			    for(i = 0; i < num; i++)
+			     {
+			       newHTML = newHTML + "<br>Guest Name: <input type=\"text\" class=\"inputs\" name=\"guests[]\"><br>";
+			     }
+			     newHTML= newHTML + "</form><button onclick=\"displayNumGuestInput()\">Back</button>";
+			    document.getElementById("guest_input").innerHTML = newHTML;
+			}
+			else
+				alert("Invalid number of guests. Enter 0-7");
+		}
+
+		function handleGuestCheckbox(checkbox)
+		{
+			if(checkbox.checked == true)
+				document.getElementById("guest_input").style.visibility="visible";
+			else
+				document.getElementById("guest_input").style.visibility="hidden";
+		}
+
+		
+		</script>
+
+		<!-- Functions for form submission-->
+		<script>
+			function checkFormValues(){
+				var inputsValid = true;
+				var x;
+				
+				//Check the Main Guest input field
+				var nameForm= document.forms["nameForm"]["main_guest"];
+				var value = nameForm.value.trim();
+				if(!value)
+				{
+					alert("Name field cannot be empty");
+					inputsValid = false;
+					return inputsValid;
+				}
+
+				//Make sure if any additional guests are coming, form is filled out
+				var guestBox = document.getElementById("guest_checkbox");
+				if(guestBox.checked)
+				{
+					var guestInputs = document.forms["extrasFields"];
+					//Checks for which state the guest_input div is in. The "extrasFields" form is only defined when user has pressed enter names button.
+					if(typeof guestInputs === "undefined")
+					{
+						alert("Please enter guest names");
+					}
+					else
+					{
+						var length = guestInputs.length; //Had to use length because a for/in loop was grabbing elements which contained meta-data vs inputs.
+
+						//For each guest input, check if it is empty. Return if as soon as an empty input is found.
+						for(i=0; i<length; i++)
+						{
+							var input = guestInputs[i];
+							var value = input.value.trim();
+							if(!value)
+							{
+								alert("Guest names cannot be empty");
+								inputsValid = false;
+								return inputsValid;
+							}
+						}
+					}
+				}
+
+				return inputsValid;
+			}
+
+
+			function submitRSVP()
+			{
+				checkFormValues();
+
+				/*document.forms["name_field"].submit();
+				//Checks for which state the guest_input div is in. The "extrasFields" form is only defined when user has pressed enter names button.
+				if(typeof guestInputs !== "undefined")
+				{
+					document.forms["extrasFields"].submit();
+				}*/
+
+			}
+		</script>
+
+	</div>
+	</div>
+	<!-- Form Ends Here -->
+
+    </body>
