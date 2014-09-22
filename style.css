@@ -1,0 +1,111 @@
+p{
+	font-family:"IM Fell French Canon", serif;
+	font-style:italic;
+	font-size: 18px;
+	color: #BBBBBB;
+	margin:25px;
+}
+
+h2{
+	margin: 0;     
+	color: #FF8F61;
+	padding-top: 50px;
+	font-size: 72px;
+	font-family: "Bilbo Swash Caps", cursive; 
+	text-shadow: 1px 1px #EEEEEE;   
+}
+
+.item{    
+	background-color:#FF8F61;
+	text-align: center;
+	vertical-align: center;
+	height: 450px !important;
+	position:fixed;
+}
+
+.inner-item {
+	text-align: center;
+	img {
+	margin: 0 auto;
+	}
+}
+
+.carousel{
+	margin-top: 0px;
+	box-shadow: 0px 5px 5px #BBBBBB;
+	
+}
+
+.carousel-inner>.item>.inner-item>img {
+	margin: 0 auto;
+	height: 430px;
+	position: middle;
+	top:50%;
+	margin-top:9px;
+}
+
+img {
+	position: middle;
+	max-height:430px;
+	border-style:solid;
+	border-color:white;
+	border-width:4px;
+	margin: 0 auto;
+}
+
+.bs-example{
+       	margin: 0px;
+}
+
+.RSVPFormContainer{
+	margin-left:auto;
+	margin-right:auto;
+	min-height:100%;
+	width:80%;
+	background-color: white;
+	text-align:center;
+	border-style:solid;
+	border-right-color: #DDDDDD;
+	border-right-width:2px;
+	border-left-color: #DDDDDD;
+	border-left-width:2px;
+	border-bottom-color:#FFFFFF;
+	border-bottom-width:1px;
+	border-top-width:0px;
+}
+
+.form{
+	font-family:"IM Fell French Canon", serif;
+	font-style:italic;
+	font-size: 18px;
+	color: #BBBBBB;
+	margin:25px;
+}
+
+body{
+	background-image:url('./images/background.png');
+	background-attachment:fixed;
+	
+}
+
+.RSVPForm{
+	text-align:middle;
+	display: table;
+	margin: 0 auto;
+}
+
+button{
+	font-family:"Arial";
+	font-size:18px;
+	color:black !important;
+	font-style:normal;
+}
+
+input{
+	color:#FF8F61;
+
+}
+
+#extras{
+	width: 30px;
+}
