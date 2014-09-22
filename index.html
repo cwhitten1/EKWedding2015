@@ -1,10 +1,10 @@
 <DOCTYPE html>
 <title>Kristina & Elli 2015</title>
 <head>
-	<!-- postgreSQL databsae name = ekweddb -->
 	<link rel="shortcut icon" type="image/png" href="icon.png">
 	<link href='http://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|IM+Fell+French+Canon' rel='stylesheet' type='text/css'>
 
+        <!-- postgreSQL databsae name = ekweddb -->
         <meta charset="UTF-8">
         <title>Example of Twitter Bootstrap 3 Carousel</title>
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -54,6 +54,9 @@
         </div>
 	<!-- Carousel Ends Here -->
 
+
+
+
 	<!-- Form Starts Here -->
 	<div class="RSVPFormContainer">
 	<h2>Kristina & Elli 2015</h2>
@@ -61,58 +64,70 @@
 	
 	<p>Congratulations! You've been invited to the wedding. Please take a moment to fill out this RSVP form.</p>
 
-	<div id="name_input">
-			<form id="name_field" class="form" name="nameForm" action="addMainGuest.php">
-				Name: <input type="text" class="inputs" name="main_guest">
-				<br><br>I'm bringing guests <input id="guest_checkbox" type="checkbox" onchange="handleGuestCheckbox(this)">
-				<hr>
-			</form>
-
+	<form id="guest_form" class="form" name="guestForm" action="addGuest.php">
+		<div id="name_input">
+			Name: <input type="text" class="inputs" name="main_guest">
+			<br><br>I'm bringing guests <input id="guest_checkbox" type="checkbox" onchange="handleGuestCheckbox(this)"> <hr>
 		</div>
-		<div id="guest_input" class="form" style="visibility: hidden">
-			<p id="demo">Enter number of guests.</p>
-			<form id="extrasForm">
-			    <input id="extras" type="text" name="Extras">
-			</form>
-			<button onclick="displayGuestInputs()">Enter Guest Names</button>
+		<div id="guest_input" data-state="blank" style="visibility:hidden">
 		</div>
-
-		<button style="position:center;" onclick="submitRSVP()">RSVP</button>
 		
+	</form>	
+
+	<div id="guest_num_input" class="form" style="visibility: hidden">
+				<p id="demo">Enter number of guests.</p>
+				<input id="extras" type="text" name="Extras">
+				<button onclick="displayGuestInputs()" style="visibility">Enter Guest Names</button>
+	</div>
+	<button style="position:center;" onclick="submitRSVP()">RSVP</button>
+
+
 		<!-- Functions for dynamic updates on web page-->
 		<script>
-		function displayNumGuestInput(){
-			var newHTML = "<p id=\"demo\">Enter number of guests.</p>"
-			 				+ 	"<form id=\"extrasForm\">"
-			    			+		"<input id=\"extras\" type=\"text\" name=\"Extras\">"
-							+	"</form>"
-							+   "<button onclick=\"displayGuestInputs()\">Enter Guest Names</button>"
-			document.getElementById("guest_input").innerHTML =  newHTML;
+		function removeGuestinputs(){
+			var newHTML = "";
+			var guestDiv = document.getElementById("guest_input");
+			guestDiv.setAttribute("data-state","blank");
+			guestDiv.innerHTML =  newHTML;
+
+			//Show num guest input
+			document.getElementById("guest_num_input").style.visibility="visible";
 		}
 
 		function displayGuestInputs() {
 		    var num = document.getElementById("extras").value;
-		    if(num < 7)
+		    if(num <= 7)
 		    {
-			    var newHTML ="<form id=\"extrasFields\" action=\"addGuests.php\" method=\"post\">";
+			    var newHTML ="";
 			    
 			    for(i = 0; i < num; i++)
 			     {
 			       newHTML = newHTML + "<br>Guest Name: <input type=\"text\" class=\"inputs\" name=\"guests[]\"><br>";
 			     }
-			     newHTML= newHTML + "</form><button onclick=\"displayNumGuestInput()\">Back</button>";
-			    document.getElementById("guest_input").innerHTML = newHTML;
+			     newHTML= newHTML + "<button onclick=\"removeGuestinputs()\">Change # of Guests</button>";
+			    var guestDiv = document.getElementById("guest_input");
+				guestDiv.setAttribute("data-state","fields");
+				guestDiv.innerHTML =  newHTML;
+
+				//Hide num guest input
+				document.getElementById("guest_num_input").style.visibility="hidden";
 			}
 			else
-				alert("Invalid number of guests. Enter 0-7");
+				alert("Invalid number of guests. Enter 1-7");
 		}
 
 		function handleGuestCheckbox(checkbox)
 		{
 			if(checkbox.checked == true)
+			{
+				document.getElementById("guest_num_input").style.visibility="visible";
 				document.getElementById("guest_input").style.visibility="visible";
+			}
 			else
+			{
+				document.getElementById("guest_num_input").style.visibility="hidden";
 				document.getElementById("guest_input").style.visibility="hidden";
+			}
 		}
 
 		
@@ -125,7 +140,7 @@
 				var x;
 				
 				//Check the Main Guest input field
-				var nameForm= document.forms["nameForm"]["main_guest"];
+				var nameForm= document.forms["guestForm"]["main_guest"];
 				var value = nameForm.value.trim();
 				if(!value)
 				{
@@ -138,18 +153,19 @@
 				var guestBox = document.getElementById("guest_checkbox");
 				if(guestBox.checked)
 				{
-					var guestInputs = document.forms["extrasFields"];
-					//Checks for which state the guest_input div is in. The "extrasFields" form is only defined when user has pressed enter names button.
-					if(typeof guestInputs === "undefined")
+					var guestInputs = document.forms["guestForm"];
+					var guestDiv = document.getElementById("guest_input");
+					//Checks for which state the guest_input div is in. 
+					if(guestDiv.getAttribute("data-state")==="blank")
 					{
 						alert("Please enter guest names");
 					}
 					else
 					{
-						var length = guestInputs.length; //Had to use length because a for/in loop was grabbing elements which contained meta-data vs inputs.
+						var length = guestInputs.length-1; //Had to use length because a for/in loop was grabbing elements which contained meta-data vs inputs.
 
 						//For each guest input, check if it is empty. Return if as soon as an empty input is found.
-						for(i=0; i<length; i++)
+						for(i=1; i<length; i++)
 						{
 							var input = guestInputs[i];
 							var value = input.value.trim();
