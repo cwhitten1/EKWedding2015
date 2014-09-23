@@ -109,3 +109,11 @@ input{
 #extras{
 	width: 30px;
 }
+
+footer{
+	font-family:"IM Fell French Canon", serif;
+	font-style:italic;
+	font-size: 18px;
+	color: white;
+	text-align: center;
+}
