@@ -83,7 +83,7 @@ img {
 }
 
 body{
-	background-image:url('./images/background.png');
+	background-image:url('./img/background.png');
 	background-attachment:fixed;
 	
 }
@@ -108,4 +108,12 @@ input{
 
 #extras{
 	width: 30px;
+}
+
+footer{
+	font-family:"IM Fell French Canon", serif;
+	font-style:italic;
+	font-size: 18px;
+	color: white;
+	text-align: center;
 }
