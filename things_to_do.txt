@@ -1,0 +1,1 @@
+-Create a getCodes.php file which will return an array of all the codes in the database.
